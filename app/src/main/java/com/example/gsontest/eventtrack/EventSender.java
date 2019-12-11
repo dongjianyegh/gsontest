@@ -62,6 +62,8 @@ final class EventSender extends Thread {
 
             } finally {
                 CommonParams.sIsSending = false;
+
+                EventTrack.getInstance().executeEventsInBackup();
             }
         }
     }

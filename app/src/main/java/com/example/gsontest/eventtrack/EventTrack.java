@@ -59,6 +59,10 @@ public class EventTrack {
         mCollector.trackEvent(Event.obtainNumberEvent(key));
     }
 
+    void executeEventsInBackup() {
+        mCollector.trackEvent(Event.obtainWakeupEvent());
+    }
+
     public void increaseJson(int lanId, int layoutId) {
         mCollector.trackEvent(Event.obtainJsonEvent(RecordFactory.SETUP_PAGE_SHOW, JsonOperationType.TYPE_CUSTOM_START, lanId, layoutId));
     }

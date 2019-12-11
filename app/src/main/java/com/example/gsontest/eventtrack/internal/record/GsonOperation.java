@@ -49,7 +49,7 @@ public class GsonOperation<T> {
     // TODO 加上其他的已经实现好的函数
 
     // 定义一个自定义的，用户可以自己实现
-    public void operateCustomEvent(T value, Event event) {
+    protected void operateCustomEvent(T value, Event event) {
 
     }
 }

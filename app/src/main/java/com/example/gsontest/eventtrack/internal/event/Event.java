@@ -90,6 +90,12 @@ public final class Event implements Parcelable {
         return m;
     }
 
+    public static Event obtainWakeupEvent() {
+        Event m = obtain();
+        m.mEventType = EventType.TYPE_WAKEUP;
+        return m;
+    }
+
     public void recycle() {
         if (mInPool) {
             throw new IllegalStateException("This event cannot be recycled because it "

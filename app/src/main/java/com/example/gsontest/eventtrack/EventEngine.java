@@ -3,7 +3,6 @@ package com.example.gsontest.eventtrack;
 import com.example.gsontest.eventtrack.internal.CommonParams;
 import com.example.gsontest.eventtrack.internal.event.Event;
 import com.example.gsontest.eventtrack.internal.event.EventType;
-import com.example.gsontest.eventtrack.internal.event.JsonOperationType;
 import com.example.gsontest.eventtrack.internal.memorycache.MemoryCache;
 import com.example.gsontest.eventtrack.internal.record.GsonRecord;
 import com.example.gsontest.eventtrack.internal.storage.EventStorage;
@@ -34,18 +33,7 @@ public class EventEngine {
                 mStorage.saveEventToBackup(event);
                 mHasEventInBackup = true;
             } else {
-                // 取出所有的发送时候的指令
-                if (mHasEventInBackup) {
-                    final List<Event> events = mStorage.getEventFromBackup();
-                    if (events != null) {
-                        for (Event eventBackup : events) {
-                            processInternal(eventBackup);
-                        }
-                    }
-                    mHasEventInBackup = false;
-
-                    mStorage.clearBackup();
-                }
+                processEventsInBackup();
                 processInternal(event);
             }
         }
@@ -59,6 +47,22 @@ public class EventEngine {
             processNumber(event.getKey(), event.getNumberIncrease());
         } else if (type == EventType.TYPE_JSON) {
             processJson(event.getKey(), event);
+        } else if (type == EventType.TYPE_WAKEUP) {
+            processEventsInBackup();
+        }
+    }
+
+    private void processEventsInBackup() {
+        if (mHasEventInBackup) {
+            final List<Event> events = mStorage.getEventFromBackup();
+            if (events != null) {
+                for (Event eventBackup : events) {
+                    processInternal(eventBackup);
+                }
+            }
+            mHasEventInBackup = false;
+
+            mStorage.clearBackup();
         }
     }
 
@@ -120,9 +124,7 @@ public class EventEngine {
 
         mMemory.putMemoryJson(key, object);
 
-        if (JsonOperationType.isCustomOperation(event.getOperationType())) {
-            gsonRecord.getOperation().operateCustomEvent(object, event);
-        }
+        gsonRecord.getOperation().operateEvent(object, event);
 
         try {
             final String result = gsonRecord.getOperation().serialize(mGson, clazz, object);

@@ -16,8 +16,11 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.Arrays;
+
 public class MainActivity extends AppCompatActivity {
 
+    private int start = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,10 +39,13 @@ public class MainActivity extends AppCompatActivity {
 
         MMKV.initialize(this);
 
+
         findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventTrack.getInstance().increaseJson(1, 1);
+                EventTrack.getInstance().increaseJson(3, 3);
+                EventTrack.getInstance().addEc36(start, Arrays.asList(1,2,3,4,5));
+                start++;
             }
         });
 

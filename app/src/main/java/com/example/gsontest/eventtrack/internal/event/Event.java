@@ -11,11 +11,15 @@ public final class Event implements Parcelable {
     private String mKey;
     private @EventType int mEventType; // 支持两种，IntRecord，以及GsonRecord, NoneRecord
     private int mOperationType;
-    public int mArg1;
-    public int mArg2;
-    private Object mParams;
     private boolean mInPool;
     private Event mNext;
+
+    // 各种参数
+    public int mArgInt1;
+    public int mArgInt2;
+    public String mArgStr1;
+    public String mArgStr2;
+    public Object mParams;
 
     private Event() {
     }
@@ -29,7 +33,7 @@ public final class Event implements Parcelable {
     }
 
     public int getNumberIncrease() {
-        return mArg1;
+        return mArgInt1;
     }
 
     public int getOperationType() {
@@ -60,7 +64,7 @@ public final class Event implements Parcelable {
         Event m = obtain();
         m.mKey = key;
         m.mEventType = EventType.TYPE_NUMBER;
-        m.mArg1 = increase;
+        m.mArgInt1 = increase;
         m.mParams = null;
         return m;
     }
@@ -84,8 +88,8 @@ public final class Event implements Parcelable {
         m.mKey = key;
         m.mEventType = EventType.TYPE_JSON;
         m.mOperationType = operationType;
-        m.mArg1 = arg1;
-        m.mArg2 = arg2;
+        m.mArgInt1 = arg1;
+        m.mArgInt2 = arg2;
 
         return m;
     }
@@ -101,12 +105,14 @@ public final class Event implements Parcelable {
             throw new IllegalStateException("This event cannot be recycled because it "
                     + "is still in pool.");
         }
-        mArg1 = 0;
-        mArg2 = 0;
+        mArgInt1 = 0;
+        mArgInt2 = 0;
         mInPool = true;
         mOperationType = 0;
         mParams = null;
         mKey = null;
+        mArgStr1 = null;
+        mArgStr2 = null;
 
         synchronized (sPoolSync) {
             if (sPoolSize < MAX_POOL_SIZE) {
@@ -140,13 +146,15 @@ public final class Event implements Parcelable {
         dest.writeString(mKey);
         dest.writeInt(mEventType);
         dest.writeInt(mOperationType);
-        dest.writeInt(mArg1);
-        dest.writeInt(mArg2);
+        dest.writeInt(mArgInt1);
+        dest.writeInt(mArgInt2);
+        dest.writeString(mArgStr1);
+        dest.writeString(mArgStr2);
         if (mParams != null) {
             try {
                 Parcelable p = (Parcelable)mParams;
                 dest.writeInt(1);
-                dest.writeParcelable(p, flags);
+                dest.writeValue(p);
             } catch (ClassCastException e) {
                 throw new RuntimeException(
                         "Can't marshal non-Parcelable objects across processes.");
@@ -160,10 +168,12 @@ public final class Event implements Parcelable {
         mKey = source.readString();
         mEventType = source.readInt();
         mOperationType = source.readInt();
-        mArg1 = source.readInt();
-        mArg2 = source.readInt();
+        mArgInt1 = source.readInt();
+        mArgInt2 = source.readInt();
+        mArgStr1 = source.readString();
+        mArgStr2 = source.readString();
         if (source.readInt() != 0) {
-            mParams = source.readParcelable(getClass().getClassLoader());
+            mParams = source.readValue(getClass().getClassLoader());
         }
     }
 }

@@ -4,17 +4,16 @@ import com.example.gsontest.eventtrack.internal.event.Event;
 import com.example.gsontest.eventtrack.internal.record.GsonOperation;
 
 import java.util.HashMap;
-import java.util.Map;
 
-public class GsonLanguageLayout extends GsonOperation<Map<String, Map<String, Integer>>> {
+public class GsonLanguageLayout extends GsonOperation<HashMap<String, HashMap<String, Integer>>> {
 
     @Override
-    public void operateCustomEvent(Map<String, Map<String, Integer>> value, Event event) {
-        final int lanId = event.mArg1;
-        final int layoutId = event.mArg2;
+    public void operateCustomEvent(HashMap<String, HashMap<String, Integer>> value, Event event) {
+        final int lanId = event.mArgInt1;
+        final int layoutId = event.mArgInt2;
 
         final String key1 = String.valueOf(lanId);
-        Map<String, Integer> layoutCount = value.get(key1);
+        HashMap<String, Integer> layoutCount = value.get(key1);
         if (layoutCount == null) {
             layoutCount = new HashMap<>();
             value.put(key1, layoutCount);

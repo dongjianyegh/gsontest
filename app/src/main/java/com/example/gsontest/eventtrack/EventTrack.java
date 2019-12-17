@@ -6,6 +6,8 @@ import com.example.gsontest.eventtrack.internal.memorycache.MemoryCache;
 import com.example.gsontest.eventtrack.internal.storage.EventStorage;
 import com.example.gsontest.eventtrack.internal.storage.MmkvStorage;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
 
 public class EventTrack {
@@ -63,11 +65,18 @@ public class EventTrack {
         mCollector.trackEvent(Event.obtainWakeupEvent());
     }
 
+    public void report() {
+        mSender.report();
+    }
+
     public void increaseJson(int lanId, int layoutId) {
         mCollector.trackEvent(Event.obtainJsonEvent(RecordFactory.SETUP_PAGE_SHOW, JsonOperationType.TYPE_CUSTOM_START, lanId, layoutId));
     }
 
-    public void report() {
-        mSender.report();
+    public void addEc36(int source, List<Integer> lans) {
+        Event event = Event.obtainJsonEvent(RecordFactory.DEATIL_INFO_LIST, JsonOperationType.TYPE_CUSTOM_START, lans);
+        event.mArgInt1 = source;
+
+        mCollector.trackEvent(event);
     }
 }

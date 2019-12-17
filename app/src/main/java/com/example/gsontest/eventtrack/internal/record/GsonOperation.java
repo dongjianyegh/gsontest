@@ -18,7 +18,7 @@ public class GsonOperation<T> {
 
     public final Object deserialize(Gson gson, Type type, String value) {
         try {
-            return new Gson().fromJson(value, type);
+            return gson.fromJson(value, type);
         } catch (Throwable e) {
             return null;
         }

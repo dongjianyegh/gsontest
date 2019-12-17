@@ -8,6 +8,7 @@ import com.example.gsontest.eventtrack.internal.record.GsonRecord;
 import com.example.gsontest.eventtrack.internal.storage.EventStorage;
 import com.google.gson.Gson;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -95,6 +96,7 @@ public class EventEngine {
 
         //
         Class<?> clazz = gsonRecord.getClazz();
+        Type type = gsonRecord.getType();
 
         Object object = mMemory.getMemoryJson(key);
 
@@ -103,7 +105,7 @@ public class EventEngine {
             final String json = mStorage.getJsonFromMain(key);
 
             try {
-                object = gsonRecord.getOperation().deserialize(mGson, clazz, json);
+                object = gsonRecord.getOperation().deserialize(mGson, type, json);
             } catch (Throwable ignored) {
 
             }

@@ -6,7 +6,7 @@ import com.example.eventtrack.internal.record.GsonOperation;
 
 import java.util.HashMap;
 
-public class GsonLanguageLayout extends GsonOperation<HashMap<String, HashMap<String, Integer>>> {
+public class LanguageLayoutOperation extends GsonOperation<HashMap<String, HashMap<String, Integer>>> {
 
     @Override
     public void operateCustomEvent(HashMap<String, HashMap<String, Integer>> value, Event event) {

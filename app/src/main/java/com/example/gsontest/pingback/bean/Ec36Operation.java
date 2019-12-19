@@ -7,7 +7,7 @@ import com.example.eventtrack.internal.record.GsonOperation;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DetailInfoOperation extends GsonOperation<ArrayList<DetailInfo>> {
+public class Ec36Operation extends GsonOperation<ArrayList<DetailInfo>> {
 
     @Override
     protected void operateCustomEvent(ArrayList<DetailInfo> value, Event event) {

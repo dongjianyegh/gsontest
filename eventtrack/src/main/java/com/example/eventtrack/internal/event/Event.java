@@ -10,7 +10,7 @@ public final class Event implements Parcelable {
 
     private String mKey;
     private @EventType int mEventType; // 支持两种，IntRecord，以及GsonRecord, NoneRecord
-    private int mOperationType;
+    private int mOperationType = Integer.MIN_VALUE;
     private boolean mInPool;
     private Event mNext;
 
@@ -108,7 +108,7 @@ public final class Event implements Parcelable {
         mArgInt1 = 0;
         mArgInt2 = 0;
         mInPool = true;
-        mOperationType = 0;
+        mOperationType = Integer.MIN_VALUE;
         mParams = null;
         mKey = null;
         mArgStr1 = null;

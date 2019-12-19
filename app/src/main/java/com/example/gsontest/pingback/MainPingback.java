@@ -14,12 +14,12 @@ public class MainPingback extends MainDefine {
     }
 
     public static void increaseJson(int lanId, int layoutId) {
-        EventTrack.defaultEventTrack().trackEvent(Event.obtainJsonEvent(EC_1, JsonOperationType.TYPE_CUSTOM_START, lanId, layoutId));
+//        EventTrack.defaultEventTrack().trackEvent(Event.obtainJsonEvent(EC_1, JsonOperationType.TYPE_CUSTOM_START, lanId, layoutId));
     }
 
     public static void addEc36(int source, List<Integer> lans) {
-        Event event = Event.obtainJsonEvent(EC_3, JsonOperationType.TYPE_CUSTOM_START, lans);
-        event.mArgInt1 = source;
-        EventTrack.defaultEventTrack().trackEvent(event);
+//        Event event = Event.obtainJsonEvent(EC_3, JsonOperationType.TYPE_CUSTOM_START, lans);
+//        event.mArgInt1 = source;
+//        EventTrack.defaultEventTrack().trackEvent(event);
     }
 }

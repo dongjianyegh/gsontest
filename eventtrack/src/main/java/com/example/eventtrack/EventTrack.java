@@ -43,9 +43,10 @@ public class EventTrack {
         }; // TODO
         mStorage = new MmkvStorage();
         mRecordFactory = new RecordFactory();
+        final MemoryCache memoryCache = new MemoryCache();
         mEngine = new EventEngine(mStorage, new MemoryCache(), mRecordFactory);
         mCollector = new EventDispatcher(mEngine);
-        mSender = new EventSender(mNetReporter, new EventCollector(mStorage, mRecordFactory));
+        mSender = new EventSender(mNetReporter, new EventCollector(mStorage, memoryCache, mRecordFactory));
 
         mCollector.start();
         mSender.start();

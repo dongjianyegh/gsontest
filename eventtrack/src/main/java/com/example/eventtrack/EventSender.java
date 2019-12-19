@@ -27,6 +27,7 @@ final class EventSender extends Thread {
         while (true) {
             mSendWait.lock();
             try {
+                Log.d("EventSender", "wait report");
                 mSendCondition.await();
                 Log.d("EventSender", "start report");
             } catch (InterruptedException e) {
@@ -70,7 +71,7 @@ final class EventSender extends Thread {
     void report() {
         mSendWait.lock();
         try {
-            mSendCondition.signal();
+            mSendCondition.signalAll();
         } finally {
             mSendWait.unlock();
         }

@@ -2,8 +2,9 @@ package com.example.gsontest;
 
 import android.os.Bundle;
 
-import com.example.gsontest.eventtrack.EventTrack;
-import com.example.gsontest.eventtrack.internal.event.Event;
+import com.example.eventtrack.EventTrack;
+import com.example.gsontest.pingback.MainDefine;
+import com.example.gsontest.pingback.MainPingback;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.tencent.mmkv.MMKV;
@@ -11,7 +12,6 @@ import com.tencent.mmkv.MMKV;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.os.Handler;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,12 +39,15 @@ public class MainActivity extends AppCompatActivity {
 
         MMKV.initialize(this);
 
+        // TODO 注解干的事，暂时先这样了
+        EventTrack.defaultEventTrack().registerRecordDefine(new MainDefine());
+
 
         findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventTrack.getInstance().increaseJson(3, 3);
-                EventTrack.getInstance().addEc36(start, Arrays.asList(1,2,3,4,5));
+                MainPingback.increaseJson(3, 3);
+                MainPingback.addEc36(start, Arrays.asList(1,2,3,4,5));
                 start++;
             }
         });
@@ -52,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventTrack.getInstance().report();
+                EventTrack.defaultEventTrack().report();
             }
         });
 

@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':eventtrack'
 rootProject.name='gsontest'

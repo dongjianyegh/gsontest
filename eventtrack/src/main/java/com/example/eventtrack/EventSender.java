@@ -3,7 +3,6 @@ package com.example.eventtrack;
 import android.util.Log;
 
 import com.example.eventtrack.internal.CommonParams;
-import com.example.eventtrack.internal.storage.EventStorage;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -14,12 +13,13 @@ final class EventSender extends Thread {
     private final Condition mSendCondition = mSendWait.newCondition();
 
     private final NetReporter mReporter;
-    private final EventStorage mStorage;
+    private final EventCollector mCollector;
 
-    EventSender(NetReporter reporter, EventStorage storage) {
+
+    EventSender(NetReporter reporter, EventCollector collector) {
         super("EventSender");
         mReporter = reporter;
-        mStorage = storage;
+        mCollector = collector;
     }
 
     @Override
@@ -42,7 +42,7 @@ final class EventSender extends Thread {
 
                 String events;
                 synchronized (CommonParams.sStorageLock) {
-                    events = mStorage.getAllEventsFromMainForReport();
+                    events = mCollector.getAllEvents();
                 }
 
 //                if (TextUtils.isEmpty(events)) {
@@ -56,7 +56,7 @@ final class EventSender extends Thread {
                 }
 
                 synchronized (CommonParams.sStorageLock) {
-                    mStorage.clearMain();
+                    mCollector.clearAllEvents();
                 }
 
             } finally {

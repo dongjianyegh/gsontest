@@ -12,13 +12,17 @@ class RecordFactory {
 
 
     private final Map<String, GsonRecord> mJsonRecordDefines = new HashMap<>();
-    private final Set<String> mNumberDefines = new HashSet<>();
+    private final Set<String> mJsonKeys = new HashSet<>();
+
+    private final Set<String> mNumberKeys = new HashSet<>();
+
+    final Set<InstantGetter> mInstantGetters = new HashSet<>();
 
     private final Set<EventDefine> mDefineRegisters = new HashSet<>();
 
     private volatile boolean mInited = false;
 
-    public void registRecordDefine(EventDefine eventDefine) {
+    void registRecordDefine(EventDefine eventDefine) {
         mDefineRegisters.add(eventDefine);
     }
 
@@ -41,6 +45,11 @@ class RecordFactory {
             }
             defineJsonRecordUnlocked(define);
             defineNumberRecordUnlocked(define);
+
+            final InstantGetter getter = define.getInstanceGetter();
+            if (getter != null) {
+                mInstantGetters.add(getter);
+            }
         }
     }
 
@@ -61,7 +70,7 @@ class RecordFactory {
         }
 
         for (String key : keys) {
-            if (!mNumberDefines.add(key)) {
+            if (!mNumberKeys.add(key)) {
                 throw new RuntimeException("Number key repeat define " + key);
             }
         }
@@ -81,6 +90,7 @@ class RecordFactory {
             if (mJsonRecordDefines.put(entry.getKey(), entry.getValue()) != null) {
                 throw new RuntimeException("JsonRecord key repeat define " + entry.getKey());
             }
+            mJsonKeys.add(entry.getKey());
         }
     }
 
@@ -96,11 +106,21 @@ class RecordFactory {
 
     boolean hasNumberRecord(String key) {
         init();
-        if (!mNumberDefines.contains(key)) {
+        if (!mNumberKeys.contains(key)) {
             throw new RuntimeException("unsupported number type");
         }
 
         return true;
+    }
+
+    Set<String> getJsonKeys() {
+        init();
+        return mJsonKeys;
+    }
+
+    Set<String> getNumberKeys() {
+        init();
+        return mNumberKeys;
     }
 
 }

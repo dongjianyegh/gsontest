@@ -1,6 +1,7 @@
 package com.example.gsontest.pingback;
 
 import com.example.eventtrack.EventDefine;
+import com.example.eventtrack.InstantGetter;
 import com.example.eventtrack.internal.record.CreatorByOperation;
 import com.example.eventtrack.internal.record.GsonRecord;
 import com.example.gsontest.pingback.bean.DetailInfoOperation;
@@ -32,5 +33,10 @@ public class MainDefine implements EventDefine {
     @Override
     public Set<String> getNumberDefines() {
         return null;
+    }
+
+    @Override
+    public InstantGetter getInstanceGetter() {
+        return new ATestGetter();
     }
 }

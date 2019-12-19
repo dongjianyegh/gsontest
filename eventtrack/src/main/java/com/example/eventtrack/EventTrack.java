@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 public class EventTrack {
 
     private final NetReporter mNetReporter;
-    private final EventCollector mCollector;
+    private final EventDispatcher mCollector;
     private final EventSender mSender;
     private final EventStorage mStorage;
     private final EventEngine mEngine;
@@ -44,8 +44,8 @@ public class EventTrack {
         mStorage = new MmkvStorage();
         mRecordFactory = new RecordFactory();
         mEngine = new EventEngine(mStorage, new MemoryCache(), mRecordFactory);
-        mCollector = new EventCollector(mEngine);
-        mSender = new EventSender(mNetReporter, mStorage);
+        mCollector = new EventDispatcher(mEngine);
+        mSender = new EventSender(mNetReporter, new EventCollector(mStorage, mRecordFactory));
 
         mCollector.start();
         mSender.start();

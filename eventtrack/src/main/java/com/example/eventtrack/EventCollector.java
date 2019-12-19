@@ -1,49 +1,29 @@
 package com.example.eventtrack;
 
+import com.example.eventtrack.internal.storage.EventStorage;
 
-import com.example.eventtrack.internal.event.Event;
+public class EventCollector {
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
+    private final EventStorage mStorage;
+    private final RecordFactory mRecordFactory;
 
-import androidx.annotation.NonNull;
-
-
-final class EventCollector extends Thread {
-
-    private final BlockingQueue<Event> mQueue;
-    private final EventEngine mEngine;
-
-    EventCollector(EventEngine engine) {
-        super("TypanyEventCollector");
-        mEngine = engine;
-        mQueue = new LinkedBlockingDeque<>();
+    EventCollector(EventStorage storage, RecordFactory recordFactory) {
+        mStorage = storage;
+        mRecordFactory = recordFactory;
     }
 
-    @Override
-    public void run() {
-        while (true) {
-            Event event;
-            try {
-                event = mQueue.take();
-            } catch (InterruptedException e) {
-                event = null;
-            }
+    public String getAllEvents() {
 
-            if (event == null) {
-                continue;
-            }
+        String a = null;
 
-            mEngine.process(event);
+        String c = mRecordFactory.getJsonKeys().toString();
 
-            event.recycle();
-        }
+        String b = mRecordFactory.getNumberKeys().toString();
+
+        return null;
     }
 
-    public void trackEvent(@NonNull Event event) {
-        try {
-            mQueue.put(event);
-        } catch (InterruptedException e) {
-        }
+    public void clearAllEvents() {
+        mStorage.clearMain();
     }
 }

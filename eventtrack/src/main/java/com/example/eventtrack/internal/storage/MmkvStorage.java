@@ -69,11 +69,6 @@ public class MmkvStorage extends EventStorage {
     }
 
     @Override
-    public String getAllEventsFromMainForReport() {
-        return null;
-    }
-
-    @Override
     public void saveEventToBackup(@NonNull Event event) {
         final long curTime = System.currentTimeMillis();
         mBackMmkv.encode(String.valueOf(curTime), event);

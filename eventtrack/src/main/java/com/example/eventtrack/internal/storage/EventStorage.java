@@ -28,9 +28,6 @@ public abstract class EventStorage {
     public abstract void saveJsonToMain(@NonNull String type, String value);
 
     @GuardedBy("CommonParams.sStorageLock")
-    public abstract String getAllEventsFromMainForReport();
-
-    @GuardedBy("CommonParams.sStorageLock")
     public abstract void clearBackup();
 
     @GuardedBy("CommonParams.sStorageLock")

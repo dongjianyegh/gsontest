@@ -10,4 +10,5 @@ public interface EventDefine {
 
     public Map<String, GsonRecord> getJsonDefines();
     public Set<String> getNumberDefines();
+    InstantGetter getInstanceGetter();
 }
